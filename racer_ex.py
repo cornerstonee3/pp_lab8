@@ -30,7 +30,7 @@ font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
 
 # Load and scale background to fill the screen
-background = pygame.image.load("road.png")
+background = pygame.image.load("AnimatedStreet.png")
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Create a white screen 
@@ -42,9 +42,7 @@ class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
         # scaling original image
-        self.image = pygame.image.load("yellow_car.png").convert()
-        self.image.set_colorkey(WHITE)
-        self.image = pygame.transform.scale(self.image, (60, 50))
+        self.image = pygame.image.load("Enemy.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0)  
 
@@ -61,8 +59,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
         # red original ~900x737 -> scaled to 60x50 (wider-ish)
-        self.image = pygame.image.load("red_car.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (60, 50))
+        self.image = pygame.image.load("Player.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
         
@@ -161,11 +158,6 @@ while True:
     # check collision between player and coins
     collected = pygame.sprite.spritecollide(P1, coins, True)
     if collected:
-        # play coin sound if present (coin_sound.mp3 or coin.wav)
-        try:
-            pygame.mixer.Sound('coin_sound.mp3').play()
-        except Exception:
-            pass
         COINS += len(collected)
         # spawn replacement coins immediately so gameplay continues
         for _ in collected:
@@ -176,7 +168,7 @@ while True:
     # To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
           try:
-              pygame.mixer.Sound('crash_sound.mp3').play()
+              pygame.mixer.Sound('crash.wav').play()
           except Exception:
               pass
           time.sleep(0.5)
